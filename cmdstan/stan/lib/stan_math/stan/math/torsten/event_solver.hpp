@@ -5,6 +5,7 @@
 #include <stan/math/torsten/events_manager.hpp>
 #include <stan/math/torsten/mpi/session.hpp>
 #include <stan/math/torsten/mpi/precomputed_gradients.hpp>
+#include <stan/math/prim/mat/fun/log_sum_exp.hpp>
 #include <Eigen/Dense>
 #include <vector>
 
@@ -160,6 +161,11 @@ namespace torsten{
       if (events.is_bolus_dosing(i)) {
         init(0, events.cmt(i) - 1) += events.fractioned_amt(i);
       }
+      
+      if (events.is_log_sum_exp_dosing(i)){
+        init(0, events.cmt(i) - 1) = stan::math::log_sum_exp(init(0, events.cmt(i) - 1), events.fractioned_amt(i));
+      }
+      
       tprev = events.time(i);
     }
 
@@ -199,6 +205,11 @@ namespace torsten{
       if (events.is_bolus_dosing(i)) {
         init(0, events.cmt(i) - 1) += events.fractioned_amt(i);
       }
+      
+      if (events.is_log_sum_exp_dosing(i)){
+        init(0, events.cmt(i) - 1) = stan::math::log_sum_exp(init(0, events.cmt(i) - 1), events.fractioned_amt(i));
+      }
+      
       tprev = events.time(i);
     }
 
@@ -237,6 +248,10 @@ namespace torsten{
 
       if (events.is_bolus_dosing(i)) {
         init(0, events.cmt(i) - 1) += events.fractioned_amt(i);
+      }
+      
+      if (events.is_log_sum_exp_dosing(i)){
+        init(0, events.cmt(i) - 1) = stan::math::log_sum_exp(init(0, events.cmt(i) - 1), events.fractioned_amt(i));
       }
     }
 
