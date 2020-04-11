@@ -216,6 +216,10 @@ namespace torsten {
     bool is_dosing(int i) const {
       return evid(i) == 1 || evid(i) == 4;
     }
+    
+    bool is_log_sum_exp_dosing(int i) const {
+      return evid(i) == 11;
+    }
 
     /*
      * if an event is steady-state dosing event.
